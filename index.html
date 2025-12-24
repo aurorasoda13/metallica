@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Metallica – Fotoalbum</title>
+<style>
+  body {
+    margin: 0;
+    background-color: #000;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    touch-action: pan-y;
+  }
+  img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    position: absolute;
+    opacity: 0;
+    transition: opacity 0.6s ease;
+  }
+  img.active {
+    opacity: 1;
+  }
+</style>
+</head>
+<body>
+
+<!-- Inserisci qui le 19 immagini -->
+<img src="immagini/1.png" class="active" alt="">
+<img src="immagini/2.png" alt="">
+<img src="immagini/3.png" alt="">
+<img src="immagini/4.png" alt="">
+<img src="immagini/5.png" alt="">
+<img src="immagini/6.png" alt="">
+<img src="immagini/7.png" alt="">
+<img src="immagini/8.png" alt="">
+<img src="immagini/9.png" alt="">
+<img src="immagini/10.png" alt="">
+<img src="immagini/11.png" alt="">
+<img src="immagini/12.png" alt="">
+<img src="immagini/13.png" alt="">
+<img src="immagini/14.png" alt="">
+<img src="immagini/15.png" alt="">
+<img src="immagini/16.png" alt="">
+<img src="immagini/17.png" alt="">
+<img src="immagini/18.png" alt="">
+<img src="immagini/19.png" alt="">
+
+<script>
+  const images = document.querySelectorAll('img');
+  let current = 0;
+
+  function showImage(index) {
+    images.forEach((img, i) => {
+      img.classList.toggle('active', i === index);
+    });
+  }
+
+  // Navigazione con tastiera
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight') {
+      current = (current + 1) % images.length;
+      showImage(current);
+    } else if (e.key === 'ArrowLeft') {
+      current = (current - 1 + images.length) % images.length;
+      showImage(current);
+    }
+  });
+
+  // Navigazione con tocco (tap)
+  document.addEventListener('click', (e) => {
+    const x = e.clientX;
+    const width = window.innerWidth;
+    if (x > width / 2) {
+      current = (current + 1) % images.length;
+    } else {
+      current = (current - 1 + images.length) % images.length;
+    }
+    showImage(current);
+  });
+
+  // Navigazione con swipe
+  let startX = 0;
+  document.addEventListener('touchstart', (e) => {
+    startX = e.touches[0].clientX;
+  });
+
+  document.addEventListener('touchend', (e) => {
+    const endX = e.changedTouches[0].clientX;
+    const diff = startX - endX;
+
+    if (Math.abs(diff) > 50) { // soglia minima di swipe
+      if (diff > 0) {
+        // swipe verso sinistra → immagine successiva
+        current = (current + 1) % images.length;
+      } else {
+        // swipe verso destra → immagine precedente
+        current = (current - 1 + images.length) % images.length;
+      }
+      showImage(current);
+    }
+  });
+</script>
+
+</body>
+</html>
